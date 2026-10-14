@@ -1,30 +1,17 @@
 // Shared menu, API helpers and alert sound for all pages.
-window.MENU = [
-  { id: "sand", name: "כריכים", sub: "על לחם טרי", color: "#c96a3c", items: [
-    { id: "egg", n: "כריך ביצה אלפרדו", d: "ביצה, רוטב אלפרדו וחמאה", e: "🥪", star: 1 },
-    { id: "tuna", n: "כריך טונה אבוקדו", d: "טונה, אבוקדו וחמאה", e: "🥑", star: 1 } ] },
-  { id: "pasta", name: "פסטות", sub: "מהסיר לצלחת", color: "#e3a33b", items: [
-    { id: "cream", n: "פסטה שמנת", d: "רוטב שמנת קרמי", e: "🍝" },
-    { id: "rosa", n: "פסטה רוזה", d: "שמנת ועגבניות", e: "🍝", star: 1 } ] },
-  { id: "eggs", name: "ביצים", sub: "על המחבת", color: "#d8b06a", items: [
-    { id: "omelet", n: "חביתה / הומלט", d: "חביתה טרייה מהמחבת", e: "🍳" } ] },
-  { id: "falafel", name: "פלאפל וסיגרים", sub: "מהטיגון", color: "#8a9a52", items: [
-    { id: "cigars", n: "סיגרים", d: "סיגרים פריכים", e: "🌯" },
-    { id: "fplate", n: "מנה פלאפל", d: "מנת פלאפל מלאה", e: "🧆" },
-    { id: "fpita", n: "פיתה פלאפל", d: "כדורי פלאפל בפיתה", e: "🥙", star: 1 },
-    { id: "fonly", n: "פלאפל בלבד", d: "כדורי פלאפל עם חומוס בצד", e: "🧆", tag: "חומוס בצד" } ] },
-  { id: "cold", name: "שתייה קרה", sub: "מהמקרר", color: "#b98a5e", items: [
-    { id: "mango", n: "מים בטעם מנגו", d: "", e: "🥭" },
-    { id: "grape", n: "מים בטעם ענבים", d: "", e: "🍇" },
-    { id: "water", n: "מים", d: "", e: "💧" } ] },
-  { id: "hot", name: "שתייה חמה", sub: "מהמכונה", color: "#9a5b35", items: [
-    { id: "esp", n: "אספרסו", d: "", e: "☕" },
-    { id: "lungo", n: "קפה לונגו", d: "", e: "☕" },
-    { id: "latte", n: "הפוך", d: "", e: "☕", star: 1 },
-    { id: "turk", n: "קפה טורקי", d: "", e: "☕" } ] },
-];
-window.ITEMS = {};
-MENU.forEach(c => c.items.forEach(i => { i.cat = c; ITEMS[i.id] = i; }));
+// Menu comes from the server (/api/menu) so the panel can add and edit products.
+window.MENU = [];   // [{id, name, sub, items:[...]}]
+window.ITEMS = {};  // id → item
+window.loadMenu = async () => {
+  const { menu } = await api("/api/menu");
+  window.ITEMS = {};
+  menu.items.forEach(i => { ITEMS[i.id] = i; });
+  window.MENU = menu.cats.map(c => ({ ...c, items: menu.items.filter(i => i.cat === c.id).sort((a, b) => a.sku - b.sku) }));
+  return menu;
+};
+window.imgUrl = i => i && i.img ? `/api/img?id=${encodeURIComponent(i.id)}&v=${i.v || 1}` : "";
+// Elegant photo-less tile: the dish's first letter on a warm gradient
+window.monogram = n => `<div class="mono" aria-hidden="true"><span>${esc(String(n || "").trim().charAt(0))}</span></div>`;
 window.TABLES = [1, 2, 3];
 
 window.STATUS = {

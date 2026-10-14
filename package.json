@@ -1,6 +1,9 @@
 {
   "name": "oren-food",
   "private": true,
-  "version": "1.0.0",
-  "description": "האוכל של אורן — הזמנה מהשולחן, מלצרים ומטבח"
+  "version": "1.1.0",
+  "description": "האוכל של אורן — הזמנה מהשולחן, קופה, מלצרים ומטבח",
+  "dependencies": {
+    "sharp": "0.33.5"
+  }
 }

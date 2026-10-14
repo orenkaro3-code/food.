@@ -94,7 +94,60 @@ table.inv{width:100%;border-collapse:collapse;font-size:14px}
 .srch{width:100%;background:var(--bg);border:1.5px solid var(--line);color:var(--fg);border-radius:12px;padding:12px;font:inherit;margin-bottom:10px}
 .danger{background:var(--danger)!important;color:#2a1806!important}
 /* menu settings */
-.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:14px}
+.mgrid{display:grid;gap:8px;margin-top:14px}
+.prod{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:10px 12px}
+.prod.out{opacity:.55}
+.prod .th{width:64px;height:64px;border-radius:12px;overflow:hidden;background:var(--surface2)}
+.prod .th img{width:100%;height:100%;object-fit:cover}
+.prod .th .mono span{font-size:28px}
+.prod .nm{min-width:0}
+.prod .nm b{font-size:16px}
+.prod .nm small{display:block;color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prod .ac{display:flex;gap:8px;align-items:center}
+.skuB{font-variant-numeric:tabular-nums;background:var(--surface2);border-radius:8px;padding:1px 8px;font-size:13px;margin-inline-end:6px;color:var(--accent2)}
+.catH{margin:18px 4px 4px;font-family:var(--display);font-weight:900;font-size:22px}
+.form{background:var(--surface);border:1px solid var(--accent);border-radius:20px;padding:18px;display:grid;gap:12px;margin-top:14px}
+.form h3{margin:0;font-family:var(--display);font-weight:900;font-size:24px}
+.frow{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.fld{display:grid;gap:5px;font-size:14px;font-weight:700}
+.fld input,.fld select,.fld textarea{background:var(--bg);border:1.5px solid var(--line);color:var(--fg);border-radius:12px;padding:11px 12px;font:inherit;font-weight:400;width:100%}
+.fld input:focus,.fld select:focus{border-color:var(--accent);outline:none}
+.imgPrev{width:120px;height:90px;border-radius:12px;overflow:hidden;background:var(--surface2);border:1px dashed var(--line)}
+.imgPrev img{width:100%;height:100%;object-fit:cover}
+/* register */
+.pos{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-top:14px;align-items:start}
+@media (max-width:900px){.pos{grid-template-columns:1fr}}
+.pos .panel{display:grid;gap:12px}
+.skuRow{display:flex;gap:8px}
+.skuRow input{flex:1;min-width:0;background:var(--bg);border:2px solid var(--accent);color:var(--fg);border-radius:14px;padding:14px;font:inherit;font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.08em}
+.skuRow input.qty{flex:0 0 84px;font-size:18px;border-color:var(--line)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.pbtn{display:grid;gap:2px;text-align:right;background:var(--surface2);border:1px solid var(--line);color:var(--fg);border-radius:14px;padding:10px 12px;font:inherit}
+.pbtn b{font-size:14px;line-height:1.2}
+.pbtn span{font-size:12px;color:var(--accent2);font-variant-numeric:tabular-nums}
+.pbtn:disabled{opacity:.4}
+.pbtn:active{transform:scale(.97)}
+.ticket{background:#fbf4e8;color:#2a1c12;border-radius:18px;padding:16px;display:grid;gap:10px}
+.ticket h3{margin:0;font-family:var(--display);font-weight:900;font-size:24px;color:#2a1c12}
+.tline{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border-bottom:1px dashed #c9b49b;padding-bottom:8px}
+.tline .q{display:flex;gap:6px;align-items:center}
+.tline .q button{width:30px;height:30px;border-radius:50%;border:1px solid #c9b49b;background:none;color:#2a1c12;font-size:16px}
+.ticket .fld{color:#2a1c12}
+.ticket .fld input,.ticket .fld textarea{background:#fff;border-color:#d9c4a8;color:#2a1c12}
+.tchips{display:flex;gap:8px;flex-wrap:wrap}
+.tchips button{border:1.5px solid #c9b49b;background:#fff;color:#2a1c12;border-radius:12px;padding:10px 14px;font-weight:800;font:inherit;font-weight:800}
+.tchips button.on{background:#2a1c12;color:#fbf4e8;border-color:#2a1c12}
+.tchips button small{display:block;font-weight:600;font-size:11px;opacity:.7}
+.tchips button.busy{opacity:.55}
+.posDone{position:fixed;inset:0;z-index:110;background:rgba(15,10,6,.8);display:grid;place-items:center;padding:20px;overflow:auto}
+.posDone .box{background:#fbf4e8;color:#2a1c12;border-radius:22px;padding:24px;width:min(380px,100%);display:grid;gap:10px;justify-items:center;text-align:center}
+.posDone h2{margin:0;font-family:var(--display);font-weight:900;font-size:30px}
+.posDone .bigT{font-family:var(--display);font-weight:900;font-size:60px;line-height:1}
+.posDone .qrBox{width:220px;max-width:100%}
+.posDone .qrBox img,.posDone .qrBox canvas{width:100%!important;height:auto!important}
+.posDone .acts{display:flex;gap:8px;width:100%}
+.posDone .acts button{flex:1;border:0;border-radius:999px;padding:12px;font-weight:800;background:#2a1c12;color:#fbf4e8}
+.posDone .acts button.alt{background:transparent;color:#2a1c12;border:1.5px solid #c9b49b}
 .mitem{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
 .mitem.out{opacity:.55}
 .sw{width:52px;height:30px;border-radius:999px;border:0;background:var(--ok);position:relative;flex:none}
@@ -132,7 +185,8 @@ table.inv{width:100%;border-collapse:collapse;font-size:14px}
     <button type="button" class="on" data-v="board">הזמנות <span class="badge" id="bNew" hidden></span></button>
     <button type="button" data-v="tables">שולחנות</button>
     <button type="button" data-v="today">היום וחשבוניות</button>
-    <button type="button" data-v="menu">תפריט</button>
+    <button type="button" data-v="pos">קופה</button>
+    <button type="button" data-v="menu">מוצרים</button>
     <button type="button" data-v="qr">ברקודים וקישורים</button>
   </nav>
 
@@ -155,8 +209,24 @@ table.inv{width:100%;border-collapse:collapse;font-size:14px}
     </div>
     <div class="panel" style="margin-top:14px"><h3>כל החשבוניות של היום</h3><input id="q" class="srch" placeholder="חיפוש לפי שם, מספר הזמנה או שולחן" autocomplete="off"><div class="scroll"><table class="inv"><thead><tr><th>מס׳</th><th>שעה</th><th>שולחן</th><th>שם</th><th>פריטים</th><th>סטטוס</th><th></th></tr></thead><tbody id="invs"></tbody></table></div></div>
   </section>
+  <section id="view-pos" hidden>
+    <div class="pos">
+      <div class="panel">
+        <h3 style="margin:0">הקלדת מוצרים</h3>
+        <div class="skuRow"><input id="skuIn" inputmode="numeric" placeholder="מספר מוצר, לדוגמה 403" autocomplete="off" aria-label="מספר מוצר"><input id="qtyIn" class="qty" inputmode="numeric" value="1" aria-label="כמות"><button class="btn" type="button" id="skuAdd">הוספה</button></div>
+        <p class="muted" style="margin:0;font-size:13px">מקלידים מספר ולוחצים Enter, או לוחצים על מוצר מהרשימה.</p>
+        <div class="skuRow"><input id="posCustom" style="font-size:16px;font-weight:600;letter-spacing:0;border-color:var(--line)" placeholder="משהו שלא בתפריט? כתבו כאן" autocomplete="off"><button class="btn ghost" type="button" id="posCustomAdd">הוספה</button></div>
+        <div id="pgrid"></div>
+      </div>
+      <div class="ticket" id="ticket"></div>
+    </div>
+  </section>
   <section id="view-menu" hidden>
-    <p class="muted">מנה שנגמרה? כבו אותה כאן, והיא תופיע אצל הלקוחות כ"נגמר להיום".</p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px">
+      <button class="btn" type="button" id="newProd">+ מוצר חדש</button>
+      <span class="muted" style="font-size:14px">לכל מוצר יש מספר סידורי לקופה. המתג מסמן מנה שנגמרה להיום.</span>
+    </div>
+    <div id="prodForm"></div>
     <div class="mgrid" id="mgrid"></div>
   </section>
   <section id="view-qr" hidden>
@@ -186,7 +256,7 @@ const $ = s => document.querySelector(s);
 setStaff(true);
 let focusT = Number(new URLSearchParams(location.search).get("t")) || null;
 const vParam = new URLSearchParams(location.search).get("v");
-let view = focusT ? "tables" : (["board", "tables", "today", "menu", "qr"].includes(vParam) ? vParam : "board");
+let view = focusT ? "tables" : (["board", "tables", "today", "pos", "menu", "qr"].includes(vParam) ? vParam : "board");
 let muted = false; try { muted = localStorage.getItem("muted") === "1"; } catch {}
 let state = { orders: [], calls: [], now: Date.now(), settings: { open: true, soldOut: [] } };
 const seenOrders = new Set(), seenCalls = new Set();
@@ -200,7 +270,9 @@ const ring = k => { if (!muted) beep(k); };
 function renderTools() { $("#muteBtn").textContent = muted ? "🔇 צליל כבוי" : "🔔 צליל פועל"; $("#muteBtn").classList.toggle("off", muted); }
 
 function show(v) { view = v; document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
-  ["board", "tables", "today", "menu", "qr"].forEach(x => $("#view-" + x).hidden = x !== v);
+  ["board", "tables", "today", "pos", "menu", "qr"].forEach(x => $("#view-" + x).hidden = x !== v);
+  if (v === "menu") renderProducts();
+  if (v === "pos") { renderPos(); setTimeout(() => $("#skuIn").focus(), 50); }
   if (v === "today") loadDays(); render(); }
 $("#tabs").onclick = e => { const b = e.target.closest("[data-v]"); if (b) show(b.dataset.v); };
 
@@ -225,6 +297,7 @@ document.addEventListener("click", async e => {
       await api("/api/settings", { soldOut }); toast(cur.includes(id) ? `${ITEMS[id].n} חזר לתפריט` : `${ITEMS[id].n} סומן כנגמר`);
     }
     if (rc || s || c || ct || so) await load();
+    if (so) renderProducts();
   } catch (err) { toast(err.message); }
 });
 
@@ -318,12 +391,7 @@ function render() {
       || '<tr><td colspan="7" class="muted">עוד אין חשבוניות היום.</td></tr>';
   }
 
-  if (view === "menu") {
-    $("#mgrid").innerHTML = MENU.map(c => c.items.map(i => {
-      const out = state.settings.soldOut.includes(i.id);
-      return `<div class="mitem ${out ? "out" : ""}"><span>${i.e} <b>${i.n}</b><br><small class="muted">${out ? "נגמר להיום" : "זמין"}</small></span>
-        <button type="button" class="sw ${out ? "off" : ""}" data-sold="${i.id}" aria-label="${out ? "החזרה לתפריט" : "סימון כנגמר"}"></button></div>`; }).join("")).join("");
-  }
+  if (view === "pos") renderPosTables();
 }
 
 async function loadDays() {
@@ -331,6 +399,158 @@ async function loadDays() {
     ({ days } = await api("/api/day"));
     $("#days").innerHTML = days.length ? `<h4 style="margin:0 0 8px">ימים קודמים</h4>` + days.slice(0, 10).map(d => `<div class="lst"><div><span>${ddmm(d.closedAt)} · ${hhmm(d.openedAt)}–${hhmm(d.closedAt)}</span><span class="muted">${d.orders} הזמנות · ${d.itemsCount} מנות${d.avgPrepMin != null ? " · הכנה " + d.avgPrepMin + " דק׳" : ""}</span></div></div>`).join("") : "";
   } catch {}
+}
+
+// ===== products =====
+const imgTag = i => i.img ? `<img src="${imgUrl(i)}" alt="" loading="lazy">` : monogram(i.n);
+function renderProducts() {
+  if (!MENU.length) return;
+  $("#mgrid").innerHTML = MENU.map(c => `<div class="catH">${esc(c.name)}</div>` + c.items.map(i => {
+    const out = state.settings.soldOut.includes(i.id);
+    return `<div class="prod ${out ? "out" : ""}"><div class="th">${imgTag(i)}</div>
+      <div class="nm"><b><span class="skuB">${i.sku}</span>${esc(i.n)}</b>${i.star ? ' <span class="cust">מנת הבית</span>' : ""}<small>${esc(i.d || "")}${out ? " · נגמר להיום" : ""}</small></div>
+      <div class="ac"><button class="mini" type="button" data-edit="${i.id}">עריכה</button><button type="button" class="sw ${out ? "off" : ""}" data-sold="${i.id}" aria-label="${out ? "החזרה לתפריט" : "סימון כנגמר"}"></button></div></div>`; }).join("")).join("");
+}
+let pendingImg = null, sureDel = null;
+function openForm(id) {
+  const i = id ? ITEMS[id] : { n: "", d: "", cat: MENU[0].id, star: false, tag: "" };
+  pendingImg = null; sureDel = null;
+  $("#prodForm").innerHTML = `<div class="form" id="pf">
+    <h3>${id ? "עריכת מוצר" : "מוצר חדש"}</h3>
+    <div class="frow">
+      <label class="fld">שם המוצר<input id="fN" maxlength="50" value="${esc(i.n)}"></label>
+      <label class="fld">קטגוריה<select id="fC">${MENU.map(c => `<option value="${c.id}" ${c.id === i.cat ? "selected" : ""}>${esc(c.name)}</option>`).join("")}</select></label>
+      <label class="fld">מספר סידורי<input id="fS" inputmode="numeric" value="${i.sku || ""}" placeholder="אוטומטי"></label>
+    </div>
+    <label class="fld">תיאור קצר<input id="fD" maxlength="120" value="${esc(i.d || "")}"></label>
+    <div class="frow">
+      <label class="fld">תגית (לא חובה)<input id="fT" maxlength="20" value="${esc(i.tag || "")}" placeholder="לדוגמה: חריף, חדש"></label>
+      <label class="fld" style="align-content:center"><span><input type="checkbox" id="fStar" ${i.star ? "checked" : ""} style="width:auto"> מנת הבית (מופיעה בתמונה הגדולה למעלה)</span></label>
+    </div>
+    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <div class="imgPrev" id="fPrev">${id && i.img ? `<img src="${imgUrl(i)}" alt="">` : ""}</div>
+      <label class="fld">תמונה<input type="file" id="fImg" accept="image/*"></label>
+    </div>
+    <p class="err" id="fErr"></p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" type="button" id="fSave">${id ? "שמירה" : "הוספה לתפריט"}</button>
+      <button class="btn ghost" type="button" id="fCancel">ביטול</button>
+      ${id ? `<button class="btn ghost" type="button" id="fDel" style="margin-inline-start:auto">מחיקה</button>` : ""}
+    </div></div>`;
+  $("#pf").scrollIntoView({ behavior: "smooth", block: "start" });
+  $("#fImg").onchange = async e => {
+    const f = e.target.files[0]; if (!f) return;
+    try { pendingImg = await shrink(f); $("#fPrev").innerHTML = `<img src="${pendingImg}" alt="">`; }
+    catch { $("#fErr").textContent = "לא הצלחתי לקרוא את התמונה. נסו קובץ JPG או PNG."; }
+  };
+  $("#fCancel").onclick = () => { $("#prodForm").innerHTML = ""; };
+  $("#fSave").onclick = async () => {
+    const b = $("#fSave"); b.disabled = true; b.textContent = "שומר...";
+    try {
+      await api("/api/menu", { action: "save", image: pendingImg, item: { id, n: $("#fN").value, d: $("#fD").value, cat: $("#fC").value, sku: $("#fS").value, tag: $("#fT").value, star: $("#fStar").checked } });
+      await loadMenu(); $("#prodForm").innerHTML = ""; renderProducts(); toast(id ? "המוצר עודכן" : "המוצר נוסף לתפריט");
+    } catch (err) { $("#fErr").textContent = err.message; b.disabled = false; b.textContent = "שמירה"; }
+  };
+  if (id) $("#fDel").onclick = async () => {
+    const b = $("#fDel");
+    if (sureDel !== id) { sureDel = id; b.textContent = "לחצו שוב למחיקה"; b.classList.add("danger"); return; }
+    try { await api("/api/menu", { action: "delete", id }); await loadMenu(); $("#prodForm").innerHTML = ""; renderProducts(); toast("המוצר נמחק"); }
+    catch (err) { $("#fErr").textContent = err.message; }
+  };
+}
+// Make photos light before upload: max 960px wide JPEG
+function shrink(file) {
+  return new Promise((ok, bad) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => { const s = Math.min(1, 960 / img.width), c = document.createElement("canvas");
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url); ok(c.toDataURL("image/jpeg", 0.8)); };
+    img.onerror = bad; img.src = url;
+  });
+}
+$("#newProd").onclick = () => openForm(null);
+document.addEventListener("click", e => { const ed = e.target.closest("[data-edit]"); if (ed) openForm(ed.dataset.edit); });
+
+// ===== register (קופה) =====
+const ticket = {}; let posTable = null, posCustomN = 0;
+const liveOrders = () => state.orders.filter(o => !o.tableClosed && o.status !== "cancelled");
+const busyTables = () => new Set(liveOrders().map(o => o.table));
+function addPos(id, q = 1) {
+  const it = ITEMS[id]; if (!it) return;
+  if (state.settings.soldOut.includes(id)) { toast(`${it.n} נגמר להיום`); return; }
+  ticket[id] = (ticket[id] || 0) + q; renderTicket();
+}
+function renderPos() {
+  $("#pgrid").innerHTML = MENU.map(c => `<div class="catH" style="font-size:18px">${esc(c.name)}</div><div class="pgrid">` + c.items.map(i =>
+    `<button type="button" class="pbtn" data-pos="${i.id}" ${state.settings.soldOut.includes(i.id) ? "disabled" : ""}><span>${i.sku}</span><b>${esc(i.n)}</b></button>`).join("") + "</div>").join("");
+  renderTicket();
+}
+function renderPosTables() {
+  const busy = busyTables();
+  if (posTable == null || (busy.has(posTable) && !posTableChosen)) posTable = TABLES.find(t => !busy.has(t)) || null;
+  const el = $("#tchips"); if (!el) return;
+  el.innerHTML = TABLES.map(t => `<button type="button" data-ptable="${t}" class="${posTable === t ? "on" : ""} ${busy.has(t) ? "busy" : ""}">שולחן ${t}<small>${busy.has(t) ? "תפוס" : "פנוי"}</small></button>`).join("");
+}
+let posTableChosen = false;
+function renderTicket() {
+  const ids = Object.keys(ticket);
+  const keep = id => $("#" + id) ? $("#" + id).value : "";
+  const nm = keep("posName"), note = keep("posNote");
+  $("#ticket").innerHTML = `<h3>הזמנה בקופה</h3>
+    ${ids.length ? ids.map(id => `<div class="tline"><span class="skuB" style="background:#efe2cd;color:#2a1c12">${ITEMS[id].sku || "✍️"}</span><span>${esc(ITEMS[id].n)}</span>
+      <span class="q"><button type="button" data-tq="${id}" data-d="-1" aria-label="פחות">−</button><b>${ticket[id]}</b><button type="button" data-tq="${id}" data-d="1" aria-label="עוד">+</button></span></div>`).join("")
+      : '<p style="margin:0;color:#7a6250">עוד לא נבחרו מוצרים.</p>'}
+    <label class="fld">שם הלקוח<input id="posName" maxlength="30" value="${esc(nm)}" placeholder="חובה"></label>
+    <div class="fld">שולחן <span style="font-weight:400;color:#7a6250">(נבחר אוטומטית שולחן פנוי)</span><div class="tchips" id="tchips"></div></div>
+    <label class="fld">הערות למטבח<input id="posNote" maxlength="200" value="${esc(note)}"></label>
+    <p class="err" id="posErr"></p>
+    <button class="btn big" type="button" id="posSend" ${ids.length ? "" : "disabled"} style="width:100%;background:#2a1c12;color:#fbf4e8">שליחה למטבח והפקת ברקוד</button>
+    ${ids.length ? '<button class="btn ghost" type="button" id="posClear" style="color:#2a1c12;border-color:#c9b49b">ניקוי</button>' : ""}`;
+  renderPosTables();
+  $("#posSend").onclick = sendPos;
+  if ($("#posClear")) $("#posClear").onclick = () => { Object.keys(ticket).forEach(k => delete ticket[k]); renderTicket(); };
+}
+function skuAdd() {
+  const v = $("#skuIn").value.trim(), q = Math.max(1, parseInt($("#qtyIn").value) || 1);
+  if (!v) return;
+  const it = Object.values(ITEMS).find(i => String(i.sku) === v) || Object.values(ITEMS).find(i => !i.custom && i.n.includes(v));
+  if (!it) { toast(`אין מוצר עם המספר ${v}`); return; }
+  addPos(it.id, q); $("#skuIn").value = ""; $("#qtyIn").value = 1; $("#skuIn").focus();
+}
+$("#skuAdd").onclick = skuAdd;
+$("#skuIn").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); skuAdd(); } });
+$("#qtyIn").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); skuAdd(); } });
+const posCustom = () => { const n = $("#posCustom").value.trim(); if (!n) return; const id = "pc" + (++posCustomN); ITEMS[id] = { id, n, custom: true, sku: "" }; addPos(id); $("#posCustom").value = ""; };
+$("#posCustomAdd").onclick = posCustom;
+$("#posCustom").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); posCustom(); } });
+document.addEventListener("click", e => {
+  const p = e.target.closest("[data-pos]"), tq = e.target.closest("[data-tq]"), pt = e.target.closest("[data-ptable]");
+  if (p) addPos(p.dataset.pos);
+  if (tq) { const id = tq.dataset.tq; ticket[id] = Math.max(0, ticket[id] + +tq.dataset.d); if (!ticket[id]) delete ticket[id]; renderTicket(); }
+  if (pt) { posTable = +pt.dataset.ptable; posTableChosen = true; renderPosTables(); }
+});
+async function sendPos() {
+  const name = $("#posName").value.trim();
+  if (name.length < 2) { $("#posErr").textContent = "כתבו את שם הלקוח."; $("#posName").focus(); return; }
+  if (!posTable) { $("#posErr").textContent = "בחרו שולחן."; return; }
+  const b = $("#posSend"); b.disabled = true; b.textContent = "שולח...";
+  try {
+    const items = Object.keys(ticket).map(id => ({ id, n: ITEMS[id].n, q: ticket[id], c: !!ITEMS[id].custom }));
+    const { order } = await api("/api/order", { table: posTable, name, items, note: $("#posNote").value, source: "pos" });
+    Object.keys(ticket).forEach(k => delete ticket[k]); posTableChosen = false;
+    $("#posName").value = ""; $("#posNote").value = "";
+    showPosDone(order); await load(); renderTicket();
+  } catch (err) { $("#posErr").textContent = err.message; b.disabled = false; b.textContent = "שליחה למטבח והפקת ברקוד"; }
+}
+function showPosDone(o) {
+  const url = `${location.origin}/?t=${o.table}&o=${o.id}`;
+  const el = document.createElement("div"); el.className = "posDone";
+  el.innerHTML = `<div class="box"><h2>הזמנה ${o.num} נשלחה</h2><div>${esc(o.name)}, גשו לשולחן</div><div class="bigT">${o.table}</div>
+    <div class="qrBox" id="pdq"></div><div style="font-size:14px;color:#7a6250">הלקוח סורק כדי לראות את מצב ההזמנה, את החשבונית ולהזמין עוד</div>
+    <div class="acts"><button type="button" class="alt" data-x="rc">חשבונית</button><button type="button" data-x="close">סגירה</button></div></div>`;
+  document.body.appendChild(el);
+  try { new QRCode(el.querySelector("#pdq"), { text: url, width: 440, height: 440, colorDark: "#2a1c12", colorLight: "#fbf4e8", correctLevel: QRCode.CorrectLevel.M }); } catch {}
+  el.addEventListener("click", e => { const x = e.target.closest("[data-x]"); if (e.target === el || (x && x.dataset.x === "close")) el.remove(); else if (x) showReceipt(o); });
 }
 
 // QR codes from the live address + downloadable PNG files
@@ -396,7 +616,10 @@ async function load() {
 }
 setInterval(() => { if (state.calls.length) ring("call"); }, 12000);
 setInterval(load, 2500);
-show(view); load();
+(async () => {
+  try { await loadMenu(); } catch (e) { $("#err").textContent = "התפריט לא נטען: " + e.message; }
+  show(view); load();
+})();
 </script>
 </body>
 </html>
