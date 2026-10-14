@@ -20,7 +20,15 @@ module.exports = async (req, res) => {
   try {
     const menu = await getMenu();
     const done = [], skipped = [], failed = [];
-    for (const [id, url] of Object.entries(SOURCES)) {
+    // GET /api/import?id=<product id>&url=<figma image url> → set one product's photo
+    let sources = SOURCES;
+    if (req.query.id && req.query.url) {
+      const u = String(req.query.url);
+      if (!/^https:\/\/(www\.)?figma\.com\/api\/mcp\/asset\//.test(u)) return send(res, 400, { error: "only Figma image links" });
+      sources = { [String(req.query.id)]: u };
+      req.query.force = "1";
+    }
+    for (const [id, url] of Object.entries(sources)) {
       const item = menu.items.find(i => i.id === id);
       if (!item) { skipped.push(id); continue; }
       if (item.img && !req.query.force) { skipped.push(id); continue; }
