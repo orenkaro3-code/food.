@@ -27,6 +27,7 @@ module.exports = async (req, res) => {
     const order = {
       id: newId(), num: await nextNum(), table, name, items,
       note: String(b.note || "").slice(0, 200), status: "new", createdAt: now, updatedAt: now, times: { new: now },
+      source: b.source === "pos" ? "pos" : "table",
     };
     await put("orders", order);
     send(res, 200, { order });

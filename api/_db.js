@@ -2,7 +2,10 @@
 const URL_ = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
 const TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
 
+// Every key gets its own prefix so this site can share a Redis database with other projects
+const PREFIX = "orenfood:";
 async function redis(...cmd) {
+  if (cmd.length > 1) cmd[1] = PREFIX + cmd[1];
   if (!URL_ || !TOKEN) {
     const e = new Error("מסד הנתונים לא מחובר. ב-Vercel: Storage ← Upstash for Redis ← Connect, ואז Redeploy.");
     e.status = 503;
@@ -54,4 +57,13 @@ const saveSettings = s => redis("SET", "settings", JSON.stringify(s));
 // Running order number for the day (1, 2, 3...), reset when the day is closed
 const nextNum = () => redis("INCR", "ordernum");
 
-module.exports = { redis, getAll, put, getOne, del, readBody, send, newId, TABLES, getSettings, saveSettings, nextNum };
+// Menu (categories + products with serial numbers). Seeded from the default on first read.
+const DEFAULT_MENU = require("./_menu-default");
+async function getMenu() {
+  const v = await redis("GET", "menu");
+  if (v) { try { return JSON.parse(v); } catch {} }
+  return JSON.parse(JSON.stringify(DEFAULT_MENU));
+}
+const saveMenu = m => redis("SET", "menu", JSON.stringify(m));
+
+module.exports = { redis, getAll, put, getOne, del, readBody, send, newId, TABLES, getSettings, saveSettings, nextNum, getMenu, saveMenu };
