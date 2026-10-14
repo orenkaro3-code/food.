@@ -1,0 +1,63 @@
+/* Warm espresso & saffron: candle-lit café at night */
+:root{
+  --bg:#1a120d; --surface:#251a13; --surface2:#33241a; --line:#4a3627;
+  --fg:#f7ebd9; --muted:#c4ab8d; --accent:#e3a33b; --accent2:#f0c987; --copper:#c96a3c; --ok:#9cbf6b; --danger:#ff7a59;
+  --display:"Frank Ruhl Libre","David Libre",Georgia,serif;
+  --body:"Assistant","Heebo",system-ui,-apple-system,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:radial-gradient(1200px 600px at 85% -10%,#3a2516 0%,transparent 60%),var(--bg);background-attachment:fixed;color:var(--fg);
+  font-family:var(--body);font-size:16px;line-height:1.55;direction:rtl;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent2);outline-offset:2px}
+.wrap{max-width:1100px;margin-inline:auto}
+.logo{font-family:var(--display);font-weight:900;font-size:clamp(26px,5vw,36px);line-height:1;letter-spacing:-.3px}
+.logo span{color:var(--accent);font-style:italic}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:18px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:18px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 14px;font-weight:700;font-size:14px;background:var(--surface2)}
+.btn{border:0;border-radius:999px;padding:12px 22px;font-weight:700;font-size:15px;background:var(--accent);color:#2a1806;transition:transform .15s,filter .2s}
+.btn:hover{filter:brightness(1.07)}
+.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.45}
+.btn.ghost{background:transparent;color:var(--fg);border:1.5px solid var(--line)}
+.btn.ok{background:var(--ok)}
+.btn.yellow{background:var(--accent2)}
+.btn.big{padding:18px 26px;font-size:18px}
+.h-display{font-family:var(--display);font-weight:900;line-height:1.05;margin:0}
+.muted{color:var(--muted)}
+.err{color:var(--danger);font-size:14px;min-height:1em}
+.toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translate(-50%,-150%);z-index:99;
+  background:var(--fg);color:var(--bg);padding:12px 20px;border-radius:14px;font-weight:700;transition:transform .35s;max-width:90vw;text-align:center}
+.toast.show{transform:translate(-50%,0)}
+.sound-gate{position:fixed;inset:0;z-index:100;background:rgba(20,13,9,.94);display:grid;place-items:center;text-align:center;padding:24px}
+.sound-gate div{display:grid;gap:14px;justify-items:center;max-width:360px}
+
+/* receipt */
+.rc-scrim{position:fixed;inset:0;z-index:120;background:rgba(15,10,6,.75);display:grid;place-items:center;padding:20px;overflow:auto}
+.receipt{background:#fbf4e8;color:#2a1c12;width:min(360px,100%);border-radius:6px;padding:26px 22px 22px;font-family:var(--body);position:relative;
+  box-shadow:0 30px 80px rgba(0,0,0,.5);animation:slip .5s cubic-bezier(.2,.9,.3,1)}
+@keyframes slip{from{transform:translateY(40px);opacity:0}}
+.receipt::after{content:"";position:absolute;inset-inline:0;bottom:-10px;height:10px;
+  background:linear-gradient(-45deg,transparent 7px,#fbf4e8 0) 0 0/14px 14px,linear-gradient(45deg,transparent 7px,#fbf4e8 0) 0 0/14px 14px}
+.receipt h2{font-family:var(--display);font-weight:900;text-align:center;margin:0;font-size:26px}
+.receipt .sub{text-align:center;font-size:13px;color:#7a6250;margin-top:2px}
+.receipt hr{border:0;border-top:1.5px dashed #c9b49b;margin:14px 0}
+.receipt .kv{display:flex;justify-content:space-between;font-size:14px;gap:10px}
+.receipt .it{display:grid;grid-template-columns:28px 1fr auto;gap:8px;font-size:15px;padding-block:3px}
+.receipt .it span:last-child{font-variant-numeric:tabular-nums;color:#7a6250}
+.receipt .tot{display:flex;justify-content:space-between;font-weight:900;font-size:18px}
+.receipt .thanks{text-align:center;font-family:var(--display);font-style:italic;font-size:18px;margin-top:6px}
+.receipt .rc-actions{display:flex;gap:8px;margin-top:18px}
+.receipt .rc-actions button{flex:1;border:0;border-radius:999px;padding:12px;font-weight:700;background:#2a1c12;color:#fbf4e8}
+.receipt .rc-actions button.alt{background:transparent;color:#2a1c12;border:1.5px solid #c9b49b}
+@media print{
+  body *{visibility:hidden}
+  .receipt,.receipt *{visibility:visible}
+  .receipt{position:absolute;top:0;right:0;box-shadow:none}
+  .rc-actions{display:none!important}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

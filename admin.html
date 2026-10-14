@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1a120d">
+<title>פאנל · האוכל של אורן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Assistant:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="/style.css">
+<style>
+body{padding-bottom:40px}
+.wrap{max-width:1400px}
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);padding:5px;border-radius:18px;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:1;border:0;background:none;color:var(--muted);font-weight:800;font-size:15px;padding:11px 14px;border-radius:13px;white-space:nowrap}
+.tabs button.on{background:var(--accent);color:#2a1806}
+.badge{background:var(--copper);color:#fff;border-radius:999px;padding:0 8px;margin-inline-start:4px;font-size:12px}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.live i{width:9px;height:9px;border-radius:50%;background:var(--ok);animation:blink 1.6s infinite}
+.live.off i{background:var(--danger);animation:none}
+@keyframes blink{50%{opacity:.3}}
+.hdr-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.openSw{border:1.5px solid var(--line);background:none;color:var(--fg);border-radius:999px;padding:7px 14px;font-weight:800;font-size:13px}
+.openSw.on{border-color:var(--ok);color:var(--ok)}
+.openSw.off{border-color:var(--danger);color:var(--danger)}
+/* calls */
+.calls{display:grid;gap:10px;margin-block:14px}
+.call{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--accent2);color:#2a1806;border-radius:18px;padding:14px 18px;animation:flash 1s infinite alternate;flex-wrap:wrap}
+.call b{font-family:var(--display);font-weight:900;font-size:26px}
+@keyframes flash{to{filter:brightness(1.12)}}
+.call button{border:0;border-radius:999px;background:#2a1806;color:var(--accent2);font-weight:800;padding:10px 16px}
+/* stats strip */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-block:14px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 14px}
+.stat b{display:block;font-family:var(--display);font-weight:900;font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+/* kanban */
+.board{display:grid;grid-template-columns:repeat(4,minmax(240px,1fr));gap:12px;overflow-x:auto;padding-bottom:6px}
+.col{background:rgba(37,26,19,.6);border:1px solid var(--line);border-radius:22px;padding:12px;display:grid;gap:10px;align-content:start;min-height:200px;min-width:0}
+.col h3{margin:0 4px 2px;display:flex;justify-content:space-between;align-items:center;font-family:var(--display);font-weight:900;font-size:22px}
+.col h3 span{font-family:var(--body);font-size:14px;background:var(--surface2);border-radius:999px;padding:2px 10px;color:var(--muted)}
+.ord{background:var(--surface);border-radius:18px;padding:14px;display:grid;gap:10px;border:1.5px solid var(--line);border-inline-start:5px solid var(--sc)}
+.ord.fresh{animation:arrive .7s}
+.ord.late{border-color:var(--danger);border-inline-start-color:var(--danger)}
+@keyframes arrive{from{transform:scale(.92);opacity:.3}}
+.ord .hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.num{font-family:var(--display);font-weight:900;font-size:34px;line-height:.9}
+.num small{display:block;font-family:var(--body);font-size:13px;color:var(--muted);font-weight:700;margin-top:4px}
+.tbl{background:var(--accent);color:#2a1806;font-weight:800;border-radius:12px;padding:6px 10px;text-align:center;line-height:1.1;font-size:13px}
+.tbl b{display:block;font-family:var(--display);font-size:24px}
+.ord ul{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.ord li{display:flex;gap:10px;font-size:16px;font-weight:700}
+.ord li .q{min-width:30px;text-align:center;background:var(--surface2);border-radius:8px;font-variant-numeric:tabular-nums}
+.cust{font-size:11px;font-weight:800;color:var(--accent2);background:rgba(240,201,135,.12);border-radius:6px;padding:1px 7px;margin-inline-start:6px;white-space:nowrap}
+.note{background:rgba(240,201,135,.1);color:var(--accent2);border-radius:10px;padding:8px 10px;font-size:14px}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.timer{font-weight:800;font-variant-numeric:tabular-nums}
+.timer.warn{color:var(--accent)}
+.timer.bad{color:var(--danger)}
+.act{display:flex;gap:6px}
+.act .btn{flex:1;padding:12px;font-size:14px}
+.mini{border:1.5px solid var(--line);background:none;color:var(--fg);border-radius:999px;padding:5px 11px;font-weight:700;font-size:12px}
+.empty{text-align:center;padding:26px 10px;color:var(--muted);font-size:14px}
+/* tables */
+.tables{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:14px}
+.tcard{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:18px;display:grid;gap:12px;align-content:start}
+.tcard.focus{outline:3px solid var(--accent)}
+.tcard h3{margin:0;font-family:var(--display);font-weight:900;font-size:40px;line-height:1;display:flex;justify-content:space-between;align-items:center}
+.st{font-weight:800;font-size:13px;padding:4px 12px;border-radius:999px;background:var(--surface2)}
+.people{display:flex;flex-wrap:wrap;gap:6px}
+.people span{background:var(--surface2);border-radius:999px;padding:4px 12px;font-weight:700;font-size:14px}
+.counts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.counts div{background:var(--surface2);border-radius:14px;padding:10px;text-align:center}
+.counts b{display:block;font-size:24px;font-variant-numeric:tabular-nums}
+.counts span{font-size:12px;color:var(--muted)}
+.lst{display:grid;gap:4px;font-size:15px}
+.lst div{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding-block:5px}
+/* today */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+@media (max-width:820px){.two{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:18px;min-width:0}
+.panel h3{margin:0 0 12px;font-family:var(--display);font-weight:900;font-size:24px}
+.bar{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;font-size:14px;margin-bottom:8px}
+.bar i{grid-column:1/-1;height:8px;border-radius:8px;background:var(--surface2);overflow:hidden}
+.bar i u{display:block;height:100%;background:var(--accent);border-radius:8px}
+table.inv{width:100%;border-collapse:collapse;font-size:14px}
+.inv th,.inv td{text-align:right;padding:8px 6px;border-bottom:1px solid var(--line)}
+.inv th{color:var(--muted);font-weight:700;font-size:12px}
+.inv td{font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto}
+.danger{background:var(--danger)!important;color:#2a1806!important}
+/* menu settings */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:14px}
+.mitem{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.mitem.out{opacity:.55}
+.sw{width:52px;height:30px;border-radius:999px;border:0;background:var(--ok);position:relative;flex:none}
+.sw::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:inset-inline-start .2s}
+.sw.off{background:var(--surface2)}
+.sw.off::after{inset-inline-start:25px}
+/* qr */
+.qrs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:14px}
+.qr{background:#fbf4e8;color:#2a1c12;border-radius:24px;padding:20px;display:grid;justify-items:center;gap:10px;text-align:center}
+.qr.staff{background:#2a1c12;color:#fbf4e8;border:1px solid var(--line)}
+.qr h3{margin:0;font-family:var(--display);font-weight:900;font-size:38px;line-height:1}
+.qr .code{width:200px;max-width:100%;background:#fbf4e8;padding:8px;border-radius:12px}
+.qr .code img,.qr .code canvas{width:100%!important;height:auto!important;display:block}
+.qr small{font-size:12px;opacity:.7;word-break:break-all}
+.qr a,.qr button.dl{border:0;border-radius:999px;padding:10px 16px;font-weight:800;background:#2a1c12;color:#fbf4e8;text-decoration:none;font-size:14px}
+.qr.staff a,.qr.staff button.dl{background:var(--accent);color:#2a1806}
+.links{display:grid;gap:8px;margin-top:14px}
+.links div{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;flex-wrap:wrap}
+.links code{font-size:13px;word-break:break-all;color:var(--accent2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo">פאנל <span>אורן</span></div>
+    <div class="hdr-right">
+      <button type="button" class="openSw on" id="openSw">● פתוח להזמנות</button>
+      <span class="live" id="live"><i></i><span>מחובר</span></span>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button type="button" class="on" data-v="board">הזמנות <span class="badge" id="bNew" hidden></span></button>
+    <button type="button" data-v="tables">שולחנות</button>
+    <button type="button" data-v="today">היום וחשבוניות</button>
+    <button type="button" data-v="menu">תפריט</button>
+    <button type="button" data-v="qr">ברקודים וקישורים</button>
+  </nav>
+
+  <div class="calls" id="calls"></div>
+
+  <section id="view-board">
+    <div class="stats" id="stats"></div>
+    <div class="board" id="board"></div>
+  </section>
+  <section id="view-tables" hidden><div class="tables" id="tables"></div></section>
+  <section id="view-today" hidden>
+    <div class="stats" id="stats2"></div>
+    <div class="two">
+      <div class="panel"><h3>הכי מוזמנים היום</h3><div id="top"></div></div>
+      <div class="panel"><h3>סגירת יום</h3>
+        <p class="muted" style="margin-top:0">שומר סיכום של היום (הזמנות, מנות, זמני הכנה), מנקה את הלוח ומתחיל את מספור ההזמנות מ-1.</p>
+        <button class="btn" type="button" id="closeDay">סגירת יום</button>
+        <div id="days" style="margin-top:16px"></div>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:14px"><h3>כל החשבוניות של היום</h3><div class="scroll"><table class="inv"><thead><tr><th>מס׳</th><th>שעה</th><th>שולחן</th><th>שם</th><th>פריטים</th><th>סטטוס</th><th></th></tr></thead><tbody id="invs"></tbody></table></div></div>
+  </section>
+  <section id="view-menu" hidden>
+    <p class="muted">מנה שנגמרה? כבו אותה כאן, והיא תופיע אצל הלקוחות כ"נגמר להיום".</p>
+    <div class="mgrid" id="mgrid"></div>
+  </section>
+  <section id="view-qr" hidden>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px">
+      <button class="btn" type="button" id="dlAll">הורדת דף כל הברקודים</button>
+      <span class="muted" style="font-size:14px">ברקוד לכל שולחן, וברקוד אחד לעובדים שפותח את הפאנל.</span>
+    </div>
+    <div class="qrs" id="qrs"></div>
+    <div class="links" id="links"></div>
+  </section>
+  <p class="err" id="err" style="margin-top:14px"></p>
+</div>
+
+<div class="sound-gate" id="gate"><div>
+  <div style="font-size:64px">🔔</div>
+  <h1 class="h-display" style="font-size:40px">פאנל ההזמנות</h1>
+  <p class="muted" style="margin:0">לחצו כדי להפעיל צליל. כל הזמנה חדשה וכל קריאה למלצר ישמיעו צפצוף.</p>
+  <button class="btn big" type="button" id="start">כניסה עם צליל</button>
+</div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="/common.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+setStaff(true);
+let focusT = Number(new URLSearchParams(location.search).get("t")) || null;
+let view = focusT ? "tables" : "board";
+let state = { orders: [], calls: [], now: Date.now(), settings: { open: true, soldOut: [] } };
+const seenOrders = new Set(), seenCalls = new Set();
+let first = true, sureClose = null, sureDay = false, days = [];
+
+function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.add("show"); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove("show"), 3200); }
+$("#start").onclick = () => { unlockSound(); beep("ready"); $("#gate").hidden = true; };
+
+function show(v) { view = v; document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
+  ["board", "tables", "today", "menu", "qr"].forEach(x => $("#view-" + x).hidden = x !== v);
+  if (v === "today") loadDays(); render(); }
+$("#tabs").onclick = e => { const b = e.target.closest("[data-v]"); if (b) show(b.dataset.v); };
+
+const NEXT = { new: ["cooking", "התחלנו להכין"], cooking: ["ready", "מוכנה!"], ready: ["served", "נשלחה לשולחן ✓"] };
+const BACK = { cooking: "new", ready: "cooking", served: "ready" };
+
+document.addEventListener("click", async e => {
+  const g = k => e.target.closest(`[data-${k}]`);
+  const rc = g("receipt"), s = g("set"), c = g("done"), ct = g("close"), so = g("sold");
+  try {
+    if (rc) { const o = state.orders.find(x => x.id === rc.dataset.receipt); o && showReceipt(o); return; }
+    if (s) { s.disabled = true; await api("/api/update", { id: s.dataset.set, status: s.dataset.to }); }
+    if (c) { c.disabled = true; await api("/api/call", { id: c.dataset.done, done: true }); toast("סומן שהמלצר בדרך"); }
+    if (ct) {
+      const t = +ct.dataset.close;
+      if (sureClose !== t) { sureClose = t; render(); setTimeout(() => { if (sureClose === t) { sureClose = null; render(); } }, 5000); return; }
+      sureClose = null; ct.disabled = true; await api("/api/update", { closeTable: t }); toast(`שולחן ${t} פנוי לאורחים הבאים`);
+    }
+    if (so) {
+      const id = so.dataset.sold, cur = state.settings.soldOut;
+      const soldOut = cur.includes(id) ? cur.filter(x => x !== id) : [...cur, id];
+      await api("/api/settings", { soldOut }); toast(cur.includes(id) ? `${ITEMS[id].n} חזר לתפריט` : `${ITEMS[id].n} סומן כנגמר`);
+    }
+    if (rc || s || c || ct || so) await load();
+  } catch (err) { toast(err.message); }
+});
+
+$("#openSw").onclick = async () => {
+  try { await api("/api/settings", { open: !state.settings.open }); await load(); toast(state.settings.open ? "פתוח להזמנות" : "ההזמנות סגורות"); }
+  catch (e) { toast(e.message); }
+};
+$("#closeDay").onclick = async () => {
+  const b = $("#closeDay");
+  if (!sureDay) { sureDay = true; b.textContent = "בטוח? לחצו שוב לסגירת היום"; b.classList.add("danger"); setTimeout(() => { sureDay = false; b.textContent = "סגירת יום"; b.classList.remove("danger"); }, 5000); return; }
+  sureDay = false; b.disabled = true;
+  try { const { day } = await api("/api/day", { close: true }); toast(`היום נסגר: ${day.orders} הזמנות, ${day.itemsCount} מנות`); seenOrders.clear(); await load(); await loadDays(); }
+  catch (e) { toast(e.message); }
+  b.disabled = false; b.textContent = "סגירת יום"; b.classList.remove("danger");
+};
+
+function orderCard(o) {
+  const nx = NEXT[o.status], age = mins(state.now - o.createdAt);
+  const late = (o.status === "new" || o.status === "cooking") && age >= 20;
+  return `<article class="ord ${late ? "late" : ""} ${o.status === "new" && age < 1 ? "fresh" : ""}" style="--sc:${STATUS[o.status].c}">
+    <div class="hd"><div class="num">#${o.num}<small>${esc(o.name || "")}</small></div><div class="tbl">שולחן<b>${o.table}</b></div></div>
+    <ul>${o.items.map(i => `<li><span class="q">${i.q}</span><span>${esc(i.n)}${i.c ? '<span class="cust">✍️ מחוץ לתפריט</span>' : ""}</span></li>`).join("")}</ul>
+    ${o.note ? `<div class="note">📝 ${esc(o.note)}</div>` : ""}
+    <div class="meta"><span>${hhmm(o.createdAt)} · <span class="timer ${age >= 20 ? "bad" : age >= 10 ? "warn" : ""}">${o.status === "served" ? "הוגש " + hhmm(o.updatedAt) : age + " דק׳"}</span></span>
+      <span style="display:flex;gap:6px">${BACK[o.status] ? `<button class="mini" type="button" data-set="${o.id}" data-to="${BACK[o.status]}" title="החזרה שלב">↩︎</button>` : ""}<button class="mini" type="button" data-receipt="${o.id}">🧾</button></span></div>
+    ${nx ? `<div class="act"><button class="btn ${o.status === "cooking" ? "ok" : o.status === "ready" ? "yellow" : ""}" type="button" data-set="${o.id}" data-to="${nx[0]}">${nx[1]}</button></div>` : ""}
+  </article>`;
+}
+
+function statsHTML(all) {
+  const valid = all.filter(o => o.status !== "cancelled");
+  const items = valid.reduce((a, o) => a + o.items.reduce((x, i) => x + i.q, 0), 0);
+  const prep = valid.filter(o => o.times && o.times.ready).map(o => o.times.ready - o.createdAt);
+  const avg = prep.length ? Math.round(prep.reduce((a, x) => a + x, 0) / prep.length / 60000) : "–";
+  const open = valid.filter(o => o.status === "new" || o.status === "cooking").length;
+  const people = new Set(valid.filter(o => !o.tableClosed).map(o => o.table + ":" + o.name)).size;
+  return [[valid.length, "הזמנות היום"], [items, "מנות יצאו"], [open, "בעבודה עכשיו"], [avg + (prep.length ? " דק׳" : ""), "זמן הכנה ממוצע"], [people, "סועדים עכשיו"]]
+    .map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
+}
+
+function render() {
+  const all = state.orders, live = all.filter(o => !o.tableClosed && o.status !== "cancelled");
+  $("#calls").innerHTML = state.calls.map(c => `<div class="call"><span>🔔 <b>שולחן ${c.table}</b> ${c.name ? esc(c.name) + " " : ""}קורא למלצר · ${ago(state.now - c.createdAt)}</span>
+    <button type="button" data-done="${c.id}">אני בדרך</button></div>`).join("");
+  const nNew = live.filter(o => o.status === "new").length;
+  $("#bNew").hidden = !nNew; $("#bNew").textContent = nNew;
+  document.title = (nNew ? `(${nNew}) ` : "") + "פאנל · האוכל של אורן";
+  const sw = $("#openSw"); sw.className = "openSw " + (state.settings.open ? "on" : "off"); sw.textContent = state.settings.open ? "● פתוח להזמנות" : "● סגור להזמנות";
+
+  if (view === "board") {
+    $("#stats").innerHTML = statsHTML(all);
+    const cols = [["new", "חדשות"], ["cooking", "בהכנה"], ["ready", "מוכנות"], ["served", "נשלחו לשולחן"]];
+    $("#board").innerHTML = cols.map(([k, t]) => {
+      let list = live.filter(o => o.status === k);
+      list = k === "served" ? list.sort((a, b) => b.updatedAt - a.updatedAt).slice(0, 12) : list.sort((a, b) => a.createdAt - b.createdAt);
+      return `<div class="col"><h3>${t}<span>${live.filter(o => o.status === k).length}</span></h3>${list.length ? list.map(orderCard).join("") : `<div class="empty">אין כרגע</div>`}</div>`;
+    }).join("");
+  }
+
+  if (view === "tables") {
+    $("#tables").innerHTML = TABLES.map(t => {
+      const os = live.filter(o => o.table === t);
+      const items = {}, served = {};
+      os.forEach(o => o.items.forEach(i => { items[i.n] = (items[i.n] || 0) + i.q; if (o.status === "served") served[i.n] = (served[i.n] || 0) + i.q; }));
+      const names = [...new Set(os.map(o => o.name).filter(Boolean))];
+      const waiting = os.filter(o => o.status !== "served").length;
+      const call = state.calls.find(c => c.table === t);
+      const since = os.length ? Math.min(...os.map(o => o.createdAt)) : null;
+      return `<div class="tcard ${focusT === t ? "focus" : ""}" id="t${t}">
+        <h3>שולחן ${t} ${call ? '<span class="st" style="color:var(--accent2)">🔔 קורא</span>' : os.length ? `<span class="st" style="color:var(--ok)">תפוס</span>` : '<span class="st muted">פנוי</span>'}</h3>
+        ${names.length ? `<div><div class="muted" style="font-size:13px;margin-bottom:6px">יושבים כאן${since ? " מ-" + hhmm(since) : ""}:</div><div class="people">${names.map(n => `<span>👤 ${esc(n)}</span>`).join("")}</div></div>` : ""}
+        <div class="counts"><div><b>${os.length}</b><span>הזמנות</span></div><div><b>${waiting}</b><span>מחכות</span></div><div><b>${os.length - waiting}</b><span>הוגשו</span></div></div>
+        ${Object.keys(items).length ? `<div class="lst">${Object.entries(items).map(([n, q]) => `<div><span>${esc(n)} ×${q}</span><span class="muted">${served[n] ? `הוגש ${served[n]}` : "עוד לא הוגש"}</span></div>`).join("")}</div>`
+          : '<p class="muted" style="margin:0">עוד לא הזמינו כלום.</p>'}
+        ${os.filter(o => NEXT[o.status]).map(o => `<button class="btn ${o.status === "ready" ? "yellow" : "ghost"}" type="button" data-set="${o.id}" data-to="${NEXT[o.status][0]}">#${o.num} ${esc(o.name)} · ${NEXT[o.status][1]}</button>`).join("")}
+        ${os.length ? `<button class="btn ${sureClose === t ? "danger" : "ghost"}" type="button" data-close="${t}">${sureClose === t ? "לחצו שוב לפינוי השולחן" : "פינוי שולחן (האורחים הלכו)"}</button>` : ""}
+      </div>`; }).join("");
+    if (focusT) { const el = document.getElementById("t" + focusT); el && el.scrollIntoView({ block: "center" }); focusT = null; }
+  }
+
+  if (view === "today") {
+    $("#stats2").innerHTML = statsHTML(all);
+    const cnt = {}; all.filter(o => o.status !== "cancelled").forEach(o => o.items.forEach(i => cnt[i.n] = (cnt[i.n] || 0) + i.q));
+    const top = Object.entries(cnt).sort((a, b) => b[1] - a[1]).slice(0, 8), max = top.length ? top[0][1] : 1;
+    $("#top").innerHTML = top.length ? top.map(([n, q]) => `<div class="bar"><span>${esc(n)}</span><b>${q}</b><i><u style="width:${Math.round(q / max * 100)}%"></u></i></div>`).join("") : '<p class="muted">עוד אין הזמנות היום.</p>';
+    $("#invs").innerHTML = all.slice().reverse().map(o => `<tr><td><b>${o.num}</b></td><td>${hhmm(o.createdAt)}</td><td>${o.table}</td><td>${esc(o.name || "")}</td>
+      <td>${o.items.reduce((a, i) => a + i.q, 0)}</td><td style="color:${STATUS[o.status].c}">${STATUS[o.status].t}</td><td><button class="mini" type="button" data-receipt="${o.id}">🧾 חשבונית</button></td></tr>`).join("")
+      || '<tr><td colspan="7" class="muted">עוד אין חשבוניות היום.</td></tr>';
+  }
+
+  if (view === "menu") {
+    $("#mgrid").innerHTML = MENU.map(c => c.items.map(i => {
+      const out = state.settings.soldOut.includes(i.id);
+      return `<div class="mitem ${out ? "out" : ""}"><span>${i.e} <b>${i.n}</b><br><small class="muted">${out ? "נגמר להיום" : "זמין"}</small></span>
+        <button type="button" class="sw ${out ? "off" : ""}" data-sold="${i.id}" aria-label="${out ? "החזרה לתפריט" : "סימון כנגמר"}"></button></div>`; }).join("")).join("");
+  }
+}
+
+async function loadDays() {
+  try {
+    ({ days } = await api("/api/day"));
+    $("#days").innerHTML = days.length ? `<h4 style="margin:0 0 8px">ימים קודמים</h4>` + days.slice(0, 10).map(d => `<div class="lst"><div><span>${ddmm(d.closedAt)} · ${hhmm(d.openedAt)}–${hhmm(d.closedAt)}</span><span class="muted">${d.orders} הזמנות · ${d.itemsCount} מנות${d.avgPrepMin != null ? " · הכנה " + d.avgPrepMin + " דק׳" : ""}</span></div></div>`).join("") : "";
+  } catch {}
+}
+
+// QR codes from the live address + downloadable PNG files
+const base = location.origin;
+const QRS = [{ key: "staff", title: "לעובדים", sub: "פאנל ההזמנות", url: base + "/admin", staff: true }]
+  .concat(TABLES.map(t => ({ key: "t" + t, title: "שולחן " + t, sub: "סרקו כדי להזמין", url: `${base}/?t=${t}` })));
+function buildQr() {
+  $("#qrs").innerHTML = QRS.map(q => `<div class="qr ${q.staff ? "staff" : ""}"><h3>${q.title}</h3><div class="code" id="qr-${q.key}"></div><p style="margin:0;font-weight:700">${q.sub}</p><small>${q.url}</small>
+    <button type="button" class="dl" data-dl="${q.key}">⬇ הורדת קובץ</button></div>`).join("");
+  QRS.forEach(q => { try { new QRCode(document.getElementById("qr-" + q.key), { text: q.url, width: 600, height: 600, colorDark: "#2a1c12", colorLight: "#fbf4e8", correctLevel: QRCode.CorrectLevel.M }); } catch {} });
+  $("#links").innerHTML = QRS.map(q => `<div><b>${q.title}</b><code>${q.url}</code><a class="mini" href="${q.url}" target="_blank" rel="noopener">פתיחה</a></div>`).join("");
+}
+function qrCanvas(key) { const box = document.getElementById("qr-" + key); return box && (box.querySelector("canvas")); }
+function card(q, ctx, x, y, w) {
+  const h = w * 1.3;
+  ctx.fillStyle = q.staff ? "#2a1c12" : "#fbf4e8"; ctx.fillRect(x, y, w, h);
+  ctx.fillStyle = q.staff ? "#fbf4e8" : "#2a1c12"; ctx.textAlign = "center"; ctx.direction = "rtl";
+  ctx.font = `900 ${w * 0.12}px "Frank Ruhl Libre", serif`; ctx.fillText(q.title, x + w / 2, y + w * 0.16);
+  const c = qrCanvas(q.key), s = w * 0.78;
+  ctx.fillStyle = "#fbf4e8"; ctx.fillRect(x + (w - s) / 2 - 10, y + w * 0.22 - 10, s + 20, s + 20);
+  if (c) ctx.drawImage(c, x + (w - s) / 2, y + w * 0.22, s, s);
+  ctx.fillStyle = q.staff ? "#fbf4e8" : "#2a1c12";
+  ctx.font = `700 ${w * 0.06}px "Assistant", sans-serif`; ctx.fillText(q.sub, x + w / 2, y + w * 1.1);
+  ctx.font = `600 ${w * 0.038}px "Assistant", sans-serif`; ctx.fillText("האוכל של אורן", x + w / 2, y + w * 1.2);
+}
+function download(canvas, name) {
+  canvas.toBlob(b => { const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); }, "image/png");
+}
+document.addEventListener("click", e => {
+  const d = e.target.closest("[data-dl]"); if (!d) return;
+  const q = QRS.find(x => x.key === d.dataset.dl), w = 800, cv = document.createElement("canvas");
+  cv.width = w; cv.height = w * 1.3; card(q, cv.getContext("2d"), 0, 0, w);
+  download(cv, `qr-${q.staff ? "staff" : "table-" + q.key.slice(1)}.png`);
+});
+$("#dlAll").onclick = () => {
+  const w = 700, gap = 40, cv = document.createElement("canvas");
+  cv.width = w * 2 + gap * 3; cv.height = w * 1.3 * 2 + gap * 3;
+  const ctx = cv.getContext("2d"); ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, cv.width, cv.height);
+  QRS.forEach((q, k) => card(q, ctx, gap + (k % 2) * (w + gap), gap + Math.floor(k / 2) * (w * 1.3 + gap), w));
+  download(cv, "qr-all-tables.png");
+};
+buildQr();
+
+// live updates
+async function load() {
+  try {
+    state = await api("/api/state");
+    $("#live").className = "live"; $("#live").lastChild.textContent = "מחובר · מתעדכן לבד"; $("#err").textContent = "";
+    let ding = null;
+    state.orders.forEach(o => { if (!seenOrders.has(o.id)) { seenOrders.add(o.id); if (!first) { ding = "order"; toast(`הזמנה חדשה ${o.num} משולחן ${o.table} (${o.name})`); } } });
+    state.calls.forEach(c => { if (!seenCalls.has(c.id)) { seenCalls.add(c.id); if (!first) { ding = "call"; toast(`שולחן ${c.table} קורא למלצר`); } } });
+    if (ding) beep(ding);
+    first = false;
+    render();
+  } catch (e) {
+    $("#live").className = "live off"; $("#live").lastChild.textContent = "אין חיבור";
+    $("#err").textContent = e.message;
+  }
+}
+setInterval(() => { if (state.calls.length) beep("call"); }, 12000);
+setInterval(load, 2500);
+show(view); load();
+</script>
+</body>
+</html>
