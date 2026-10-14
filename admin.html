@@ -22,6 +22,8 @@ body{padding-bottom:40px}
 @keyframes blink{50%{opacity:.3}}
 .hdr-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .openSw{border:1.5px solid var(--line);background:none;color:var(--fg);border-radius:999px;padding:7px 14px;font-weight:800;font-size:13px}
+.tool{border:1.5px solid var(--line);background:none;color:var(--fg);border-radius:999px;padding:7px 14px;font-weight:700;font-size:13px}
+.tool.off{color:var(--danger);border-color:var(--danger)}
 .openSw.on{border-color:var(--ok);color:var(--ok)}
 .openSw.off{border-color:var(--danger);color:var(--danger)}
 /* calls */
@@ -89,6 +91,7 @@ table.inv{width:100%;border-collapse:collapse;font-size:14px}
 .inv th{color:var(--muted);font-weight:700;font-size:12px}
 .inv td{font-variant-numeric:tabular-nums}
 .scroll{overflow-x:auto}
+.srch{width:100%;background:var(--bg);border:1.5px solid var(--line);color:var(--fg);border-radius:12px;padding:12px;font:inherit;margin-bottom:10px}
 .danger{background:var(--danger)!important;color:#2a1806!important}
 /* menu settings */
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:14px}
@@ -119,6 +122,8 @@ table.inv{width:100%;border-collapse:collapse;font-size:14px}
     <div class="logo">פאנל <span>אורן</span></div>
     <div class="hdr-right">
       <button type="button" class="openSw on" id="openSw">● פתוח להזמנות</button>
+      <button type="button" class="tool" id="muteBtn">🔔 צליל פועל</button>
+      <button type="button" class="tool" id="fsBtn" title="מסך מלא למטבח">⛶ מסך מלא</button>
       <span class="live" id="live"><i></i><span>מחובר</span></span>
     </div>
   </header>
@@ -148,7 +153,7 @@ table.inv{width:100%;border-collapse:collapse;font-size:14px}
         <div id="days" style="margin-top:16px"></div>
       </div>
     </div>
-    <div class="panel" style="margin-top:14px"><h3>כל החשבוניות של היום</h3><div class="scroll"><table class="inv"><thead><tr><th>מס׳</th><th>שעה</th><th>שולחן</th><th>שם</th><th>פריטים</th><th>סטטוס</th><th></th></tr></thead><tbody id="invs"></tbody></table></div></div>
+    <div class="panel" style="margin-top:14px"><h3>כל החשבוניות של היום</h3><input id="q" class="srch" placeholder="חיפוש לפי שם, מספר הזמנה או שולחן" autocomplete="off"><div class="scroll"><table class="inv"><thead><tr><th>מס׳</th><th>שעה</th><th>שולחן</th><th>שם</th><th>פריטים</th><th>סטטוס</th><th></th></tr></thead><tbody id="invs"></tbody></table></div></div>
   </section>
   <section id="view-menu" hidden>
     <p class="muted">מנה שנגמרה? כבו אותה כאן, והיא תופיע אצל הלקוחות כ"נגמר להיום".</p>
@@ -157,7 +162,7 @@ table.inv{width:100%;border-collapse:collapse;font-size:14px}
   <section id="view-qr" hidden>
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px">
       <button class="btn" type="button" id="dlAll">הורדת דף כל הברקודים</button>
-      <span class="muted" style="font-size:14px">ברקוד לכל שולחן, וברקוד אחד לעובדים שפותח את הפאנל.</span>
+      <span class="muted" style="font-size:14px">ברקוד לכל שולחן, ברקוד למטבח וברקוד למלצרים (נפתח ישר על השולחנות והקריאות).</span>
     </div>
     <div class="qrs" id="qrs"></div>
     <div class="links" id="links"></div>
@@ -169,7 +174,8 @@ table.inv{width:100%;border-collapse:collapse;font-size:14px}
   <div style="font-size:64px">🔔</div>
   <h1 class="h-display" style="font-size:40px">פאנל ההזמנות</h1>
   <p class="muted" style="margin:0">לחצו כדי להפעיל צליל. כל הזמנה חדשה וכל קריאה למלצר ישמיעו צפצוף.</p>
-  <button class="btn big" type="button" id="start">כניסה עם צליל</button>
+  <button class="btn big" type="button" id="start">כניסה עם צליל 🔔</button>
+  <button class="btn ghost" type="button" id="startQuiet">כניסה בלי צליל</button>
 </div></div>
 <div class="toast" id="toast" role="status"></div>
 
@@ -179,13 +185,19 @@ table.inv{width:100%;border-collapse:collapse;font-size:14px}
 const $ = s => document.querySelector(s);
 setStaff(true);
 let focusT = Number(new URLSearchParams(location.search).get("t")) || null;
-let view = focusT ? "tables" : "board";
+const vParam = new URLSearchParams(location.search).get("v");
+let view = focusT ? "tables" : (["board", "tables", "today", "menu", "qr"].includes(vParam) ? vParam : "board");
+let muted = false; try { muted = localStorage.getItem("muted") === "1"; } catch {}
 let state = { orders: [], calls: [], now: Date.now(), settings: { open: true, soldOut: [] } };
 const seenOrders = new Set(), seenCalls = new Set();
 let first = true, sureClose = null, sureDay = false, days = [];
 
 function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.add("show"); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove("show"), 3200); }
-$("#start").onclick = () => { unlockSound(); beep("ready"); $("#gate").hidden = true; };
+$("#start").onclick = () => { unlockSound(); muted = false; saveMute(); beep("ready"); $("#gate").hidden = true; };
+$("#startQuiet").onclick = () => { muted = true; saveMute(); $("#gate").hidden = true; };
+function saveMute() { try { localStorage.setItem("muted", muted ? "1" : "0"); } catch {} renderTools(); }
+const ring = k => { if (!muted) beep(k); };
+function renderTools() { $("#muteBtn").textContent = muted ? "🔇 צליל כבוי" : "🔔 צליל פועל"; $("#muteBtn").classList.toggle("off", muted); }
 
 function show(v) { view = v; document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
   ["board", "tables", "today", "menu", "qr"].forEach(x => $("#view-" + x).hidden = x !== v);
@@ -216,6 +228,8 @@ document.addEventListener("click", async e => {
   } catch (err) { toast(err.message); }
 });
 
+$("#muteBtn").onclick = () => { muted = !muted; if (!muted) { unlockSound(); beep("ready"); } saveMute(); };
+$("#fsBtn").onclick = () => { try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); } catch {} };
 $("#openSw").onclick = async () => {
   try { await api("/api/settings", { open: !state.settings.open }); await load(); toast(state.settings.open ? "פתוח להזמנות" : "ההזמנות סגורות"); }
   catch (e) { toast(e.message); }
@@ -298,7 +312,8 @@ function render() {
     const cnt = {}; all.filter(o => o.status !== "cancelled").forEach(o => o.items.forEach(i => cnt[i.n] = (cnt[i.n] || 0) + i.q));
     const top = Object.entries(cnt).sort((a, b) => b[1] - a[1]).slice(0, 8), max = top.length ? top[0][1] : 1;
     $("#top").innerHTML = top.length ? top.map(([n, q]) => `<div class="bar"><span>${esc(n)}</span><b>${q}</b><i><u style="width:${Math.round(q / max * 100)}%"></u></i></div>`).join("") : '<p class="muted">עוד אין הזמנות היום.</p>';
-    $("#invs").innerHTML = all.slice().reverse().map(o => `<tr><td><b>${o.num}</b></td><td>${hhmm(o.createdAt)}</td><td>${o.table}</td><td>${esc(o.name || "")}</td>
+    const qq = ($("#q").value || "").trim();
+    $("#invs").innerHTML = all.slice().reverse().filter(o => !qq || String(o.num) === qq || String(o.table) === qq || (o.name || "").includes(qq)).map(o => `<tr><td><b>${o.num}</b></td><td>${hhmm(o.createdAt)}</td><td>${o.table}</td><td>${esc(o.name || "")}</td>
       <td>${o.items.reduce((a, i) => a + i.q, 0)}</td><td style="color:${STATUS[o.status].c}">${STATUS[o.status].t}</td><td><button class="mini" type="button" data-receipt="${o.id}">🧾 חשבונית</button></td></tr>`).join("")
       || '<tr><td colspan="7" class="muted">עוד אין חשבוניות היום.</td></tr>';
   }
@@ -320,7 +335,9 @@ async function loadDays() {
 
 // QR codes from the live address + downloadable PNG files
 const base = location.origin;
-const QRS = [{ key: "staff", title: "לעובדים", sub: "פאנל ההזמנות", url: base + "/admin", staff: true }]
+const QRS = [
+  { key: "staff", title: "מטבח / ניהול", sub: "לוח ההזמנות", url: base + "/admin", staff: true },
+  { key: "waiter", title: "מלצרים", sub: "שולחנות וקריאות", url: base + "/admin?v=tables", staff: true }]
   .concat(TABLES.map(t => ({ key: "t" + t, title: "שולחן " + t, sub: "סרקו כדי להזמין", url: `${base}/?t=${t}` })));
 function buildQr() {
   $("#qrs").innerHTML = QRS.map(q => `<div class="qr ${q.staff ? "staff" : ""}"><h3>${q.title}</h3><div class="code" id="qr-${q.key}"></div><p style="margin:0;font-weight:700">${q.sub}</p><small>${q.url}</small>
@@ -348,16 +365,18 @@ document.addEventListener("click", e => {
   const d = e.target.closest("[data-dl]"); if (!d) return;
   const q = QRS.find(x => x.key === d.dataset.dl), w = 800, cv = document.createElement("canvas");
   cv.width = w; cv.height = w * 1.3; card(q, cv.getContext("2d"), 0, 0, w);
-  download(cv, `qr-${q.staff ? "staff" : "table-" + q.key.slice(1)}.png`);
+  download(cv, `qr-${q.staff ? q.key : "table-" + q.key.slice(1)}.png`);
 });
 $("#dlAll").onclick = () => {
   const w = 700, gap = 40, cv = document.createElement("canvas");
-  cv.width = w * 2 + gap * 3; cv.height = w * 1.3 * 2 + gap * 3;
+  const rows = Math.ceil(QRS.length / 2); cv.width = w * 2 + gap * 3; cv.height = w * 1.3 * rows + gap * (rows + 1);
   const ctx = cv.getContext("2d"); ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, cv.width, cv.height);
   QRS.forEach((q, k) => card(q, ctx, gap + (k % 2) * (w + gap), gap + Math.floor(k / 2) * (w * 1.3 + gap), w));
   download(cv, "qr-all-tables.png");
 };
 buildQr();
+renderTools();
+$("#q").addEventListener("input", render);
 
 // live updates
 async function load() {
@@ -367,7 +386,7 @@ async function load() {
     let ding = null;
     state.orders.forEach(o => { if (!seenOrders.has(o.id)) { seenOrders.add(o.id); if (!first) { ding = "order"; toast(`הזמנה חדשה ${o.num} משולחן ${o.table} (${o.name})`); } } });
     state.calls.forEach(c => { if (!seenCalls.has(c.id)) { seenCalls.add(c.id); if (!first) { ding = "call"; toast(`שולחן ${c.table} קורא למלצר`); } } });
-    if (ding) beep(ding);
+    if (ding) ring(ding);
     first = false;
     render();
   } catch (e) {
@@ -375,7 +394,7 @@ async function load() {
     $("#err").textContent = e.message;
   }
 }
-setInterval(() => { if (state.calls.length) beep("call"); }, 12000);
+setInterval(() => { if (state.calls.length) ring("call"); }, 12000);
 setInterval(load, 2500);
 show(view); load();
 </script>
